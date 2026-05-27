@@ -17,12 +17,16 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState<ModulFormData | null>(null);
   const [generatedModul, setGeneratedModul] = useState<GeneratedModul | null>(null);
+  
+  // TAMBAHAN: State kontrol navigasi halaman ('form' atau 'result')
+  const [currentView, setCurrentView] = useState<'form' | 'result'>('form');
 
   const handleLogin = () => setIsLoggedIn(true);
   const handleLogout = () => {
     setIsLoggedIn(false);
     setGeneratedModul(null);
     setFormData(null);
+    setCurrentView('form');
   };
 
   const handleSubmit = async (data: ModulFormData) => {
@@ -31,6 +35,7 @@ export default function App() {
     try {
       const result = await generateModulAjar(data);
       setGeneratedModul(result);
+      setCurrentView('result'); // Alihkan ke halaman tabel hasil jika sukses
     } catch (error) {
       alert("Terjadi kesalahan saat generate modul. Silakan coba lagi.");
       console.error(error);
@@ -72,7 +77,8 @@ export default function App() {
 
       <main className="container mx-auto px-4 md:px-6">
         <AnimatePresence mode="wait">
-          {!generatedModul ? (
+          {/* PERBAIKAN: Penentuan halaman diubah menggunakan state currentView */}
+          {currentView === 'form' ? (
             <motion.div
               key="form"
               initial={{ opacity: 0, x: -20 }}
@@ -86,7 +92,14 @@ export default function App() {
                   Lengkapi data di bawah ini untuk menghasilkan perencanaan pembelajaran mendalam yang terstruktur dan kreatif.
                 </p>
               </div>
-              <GeneratorForm onSubmit={handleSubmit} isLoading={isLoading} savedData={formData} />
+              
+              {/* PERBAIKAN: Kirimkan fungsi onViewPrevious ke GeneratorForm agar bisa diklik instan */}
+              <GeneratorForm 
+                onSubmit={handleSubmit} 
+                isLoading={isLoading} 
+                savedData={formData} 
+                onViewPrevious={() => setCurrentView('result')} 
+              />
             </motion.div>
           ) : (
             <motion.div
@@ -95,10 +108,11 @@ export default function App() {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
+              {/* PERBAIKAN: Klik 'Edit Data / Kembali' tidak lagi menghapus data lama, cukup ganti view */}
               <ModulTable 
-                data={generatedModul} 
+                data={generatedModul!} 
                 formInput={formData!} 
-                onBack={() => setGeneratedModul(null)} 
+                onBack={() => setCurrentView('form')} 
               />
             </motion.div>
           )}

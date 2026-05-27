@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Send, Plus, Minus, School, User as UserIcon, Briefcase, GraduationCap, Calendar, Clock, BookOpen, Layers } from 'lucide-react';
+import { Send, Plus, Minus, School, User as UserIcon, Briefcase, GraduationCap, Calendar, Clock, BookOpen, Layers, Trash2 } from 'lucide-react';
 import { ModulFormData } from '../types';
 import { cn } from '../lib/utils';
 
@@ -21,7 +21,6 @@ const ALLOWED_TEACHERS = [
 interface GeneratorFormProps {
   onSubmit: (data: ModulFormData) => void;
   isLoading: boolean;
-  // Tambahkan props opsional untuk menampung data lama dari parent komponen
   savedData?: ModulFormData | null; 
 }
 
@@ -45,34 +44,76 @@ const PEDAGOGY_OPTIONS = [
 ];
 
 export default function GeneratorForm({ onSubmit, isLoading, savedData }: GeneratorFormProps) {
-  // Gunakan savedData sebagai nilai awal jika ada, jika tidak ada baru gunakan nilai default kosong
-  const [formData, setFormData] = useState<ModulFormData>({
-    schoolName: savedData?.schoolName || '',
-    teacherName: savedData?.teacherName || '',
-    teacherNip: savedData?.teacherNip || '',
-    position: savedData?.position || 'Guru Kelas',
-    principalName: savedData?.principalName || '',
-    principalNip: savedData?.principalNip || '',
-    level: savedData?.level || 'SD',
-    grade: savedData?.grade || '',
-    semester: savedData?.semester || 'I / Ganjil',
-    subject: savedData?.subject || '',
-    cp: savedData?.cp || '',
-    tp: savedData?.tp || '',
-    material: savedData?.material || '',
-    meetings: savedData?.meetings || 1,
-    duration: savedData?.duration || '',
-    pedagogy: savedData?.pedagogy || [],
-    dimensi: savedData?.dimensi || []
+  // 1. Inisialisasi awal: Cek localStorage terlebih dahulu sebelum beralih ke savedData atau string kosong
+  const [formData, setFormData] = useState<ModulFormData>(() => {
+    try {
+      const localData = localStorage.getItem('tm_generator_form_data');
+      if (localData) {
+        return JSON.parse(localData);
+      }
+    } catch (e) {
+      console.error("Gagal memuat data dari localStorage", e);
+    }
+
+    return {
+      schoolName: savedData?.schoolName || '',
+      teacherName: savedData?.teacherName || '',
+      teacherNip: savedData?.teacherNip || '',
+      position: savedData?.position || 'Guru Kelas',
+      principalName: savedData?.principalName || '',
+      principalNip: savedData?.principalNip || '',
+      level: savedData?.level || 'SD',
+      grade: savedData?.grade || '',
+      semester: savedData?.semester || 'I / Ganjil',
+      subject: savedData?.subject || '',
+      cp: savedData?.cp || '',
+      tp: savedData?.tp || '',
+      material: savedData?.material || '',
+      meetings: savedData?.meetings || 1,
+      duration: savedData?.duration || '',
+      pedagogy: savedData?.pedagogy || [],
+      dimensi: savedData?.dimensi || []
+    };
   });
+
+  // 2. Efek untuk otomatis menyimpan perubahan state formulir ke localStorage browser
+  useEffect(() => {
+    localStorage.setItem('tm_generator_form_data', JSON.stringify(formData));
+  }, [formData]);
+
+  // 3. Fungsi opsional untuk menghapus draf isian agar guru bisa membuat modul baru dari nol
+  const handleClearForm = () => {
+    if (confirm("Apakah Anda yakin ingin membersihkan semua draf data yang telah diisi?")) {
+      localStorage.removeItem('tm_generator_form_data');
+      setFormData({
+        schoolName: '',
+        teacherName: '',
+        teacherNip: '',
+        position: 'Guru Kelas',
+        principalName: '',
+        principalNip: '',
+        level: 'SD',
+        grade: '',
+        semester: 'I / Ganjil',
+        subject: '',
+        cp: '',
+        tp: '',
+        material: '',
+        meetings: 1,
+        duration: '',
+        pedagogy: [],
+        dimensi: []
+      });
+    }
+  };
   
   // Fungsi pengecekan keamanan ganda (Sekolah DAN Guru harus valid)
   const isSchoolAllowed = ALLOWED_SCHOOLS.some(
-  school => school.toUpperCase().trim() === formData.schoolName.toUpperCase().trim()
+    school => school.toUpperCase().trim() === formData.schoolName.toUpperCase().trim()
   );
 
   const isTeacherAllowed = ALLOWED_TEACHERS.some(
-  teacher => teacher.toUpperCase().trim() === formData.teacherName.toUpperCase().trim()
+    teacher => teacher.toUpperCase().trim() === formData.teacherName.toUpperCase().trim()
   );
   
   // Akses hanya diberikan jika nama sekolah dan nama guru terdaftar
@@ -122,11 +163,21 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
   const labelClass = "text-sm font-bold text-blue-800 flex items-center gap-2";
   const inputClass = "w-full bg-white/50 border border-blue-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all";
 
-  // Kondisi untuk memunculkan warning visual (jika salah satu atau keduanya salah saat formulir mulai diisi)
   const showWarning = (formData.schoolName || formData.teacherName) && !isAccessAllowed;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8 pb-20">
+      {/* Tombol Bersihkan Draf Tambahan */}
+      <div className="flex justify-end px-2">
+        <button
+          type="button"
+          onClick={handleClearForm}
+          className="flex items-center gap-2 text-xs font-semibold text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 px-3 py-2 rounded-xl transition-all shadow-sm"
+        >
+          <Trash2 className="w-3.5 h-3.5" /> Bersihkan Draf Form
+        </button>
+      </div>
+
       {/* Header Info */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
@@ -326,7 +377,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         )}
       </div>
 
-      {/* 3. PERINGATAN VISUAL */}
+      {/* PERINGATAN VISUAL */}
       {showWarning && (
         <div className="mx-4 p-4 bg-orange-50 border border-orange-200 rounded-xl animate-pulse">
           <p className="text-sm text-orange-700 font-medium">
@@ -335,7 +386,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         </div>
       )}
 
-      {/* 4. SUBMIT BUTTON */}
+      {/* SUBMIT BUTTON */}
       <motion.button
         whileHover={!isLoading && formData.dimensi.length > 0 && isAccessAllowed ? { scale: 1.01 } : {}}
         whileTap={!isLoading && formData.dimensi.length > 0 && isAccessAllowed ? { scale: 0.99 } : {}}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { LogIn, Lock, User } from 'lucide-react';
+import { LogIn, Lock, User, Sparkles } from 'lucide-react';
 import { cn } from '../lib/utils';
 
 interface LoginProps {
@@ -30,12 +30,12 @@ export default function Login({ onLogin }: LoginProps) {
   };
 
   return (
-    // Background diubah menjadi putih (bg-white)
+    // Mengubah background utama menjadi putih (bg-white)
     <div className="fixed inset-0 flex items-center justify-center p-4 bg-white">
-      {/* Background Decor - Menggunakan warna Royal Blue & Hijau Toska dengan opacity lembut */}
+      {/* Background Decor - Menggunakan Royal Blue & Hijau Toska lembut */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-200/30 blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-200/30 blur-[100px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-200/40 blur-[100px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/30 blur-[100px]" />
       </div>
 
       <motion.div
@@ -44,54 +44,51 @@ export default function Login({ onLogin }: LoginProps) {
         transition={{ duration: 0.5 }}
         className="w-full max-w-md relative z-10"
       >
-        {/* Glassmorphism card disesuaikan agar kontras di atas background putih */}
-        <div className="glass rounded-[2rem] p-8 md:p-12 shadow-2xl bg-white/80 border border-blue-50/50 backdrop-blur-md">
+        <div className="glass rounded-[2rem] p-8 md:p-12 shadow-2xl">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-20 h-20 mb-4">
+            <div className="w-20 h-20 mb-4"> {/* Anda bisa atur ukuran w dan h di sini */}
               <img 
                 src="/logo.png" 
                 alt="Logo TM Generator" 
                 className="w-full h-full object-contain" 
               />
             </div>
-            {/* Judul menggunakan warna Royal Blue */}
-            <h1 className="text-3xl font-bold text-blue-900 tracking-wider">TM GENERATOR</h1>
-            {/* Subtitle menggunakan kombinasi Hijau Toska & Kuning Emas */}
-            <p className="text-teal-700 font-semibold flex items-center gap-1">
-              AI Modul Ajar <span className="text-amber-500 font-bold">Generator</span>
-            </p>
+            {/* Judul: Royal Blue */}
+            <h1 className="text-3xl font-bold text-blue-900">TM GENERATOR</h1>
+            {/* Subtitle: Hijau Toska */}
+            <p className="text-teal-700 font-medium">AI Modul Ajar Generator</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Input Username */}
             <div className="space-y-2">
+              {/* Label & Icon: Royal Blue & Hijau Toska */}
               <label className="text-sm font-semibold text-blue-800 ml-1">Username</label>
               <div className="relative">
-                {/* Icon menggunakan warna Hijau Toska */}
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-600" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-500" />
                 <input
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Masukkan Username"
-                  className="w-full bg-slate-50/50 border border-blue-100 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder:text-slate-400 text-blue-900"
+                  {/* Border & Focus ring menggunakan warna tema baru */}
+                  className="w-full bg-white/50 border border-blue-200 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-blue-300"
                   required
                 />
               </div>
             </div>
 
-            {/* Input Password */}
             <div className="space-y-2">
+              {/* Label & Icon: Royal Blue & Hijau Toska */}
               <label className="text-sm font-semibold text-blue-800 ml-1">Password</label>
               <div className="relative">
-                {/* Icon menggunakan warna Hijau Toska */}
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-600" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-500" />
                 <input
                   type="password"
                   value={password}
-                  onChange={(e) => setUsername(e.target.value)} // Catatan: Sebaiknya ini setPassword, disesuaikan dari kode asli Anda
+                  onChange={(e) => setPassword(e.target.value)}
                   placeholder="Masukkan Password"
-                  className="w-full bg-slate-50/50 border border-blue-100 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-600 focus:border-transparent outline-none transition-all placeholder:text-slate-400 text-blue-900"
+                  {/* Border & Focus ring menggunakan warna tema baru */}
+                  className="w-full bg-white/50 border border-blue-200 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-blue-300"
                   required
                 />
               </div>
@@ -110,12 +107,12 @@ export default function Login({ onLogin }: LoginProps) {
               )}
             </AnimatePresence>
 
-            {/* Tombol Login - Gradasi dari Royal Blue ke Hijau Toska dengan bayangan Royal Blue */}
             <button
               type="submit"
               disabled={isSubmitting}
+              {/* Tombol: Menggunakan gradasi Royal Blue ke Hijau Toska dengan bayangan warna Blue */}
               className={cn(
-                "w-full bg-gradient-to-r from-blue-700 to-teal-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-700/20 hover:opacity-95 active:scale-[0.98] transition-all flex items-center justify-center gap-2",
+                "w-full bg-gradient-to-r from-blue-700 to-teal-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2",
                 isSubmitting && "opacity-70 cursor-not-allowed"
               )}
             >
@@ -130,9 +127,9 @@ export default function Login({ onLogin }: LoginProps) {
             </button>
           </form>
 
-          {/* Edisi Profesional menggunakan warna Kuning Emas / Amber */}
-          <p className="mt-8 text-center text-xs text-amber-600 font-bold tracking-widest uppercase">
-            Professional Edition
+          {/* Edisi Profesional: Kuning Emas (Amber) */}
+          <p className="mt-8 text-center text-xs text-amber-600 font-medium tracking-wide uppercase">
+            Profesional Edition
           </p>
         </div>
       </motion.div>

@@ -4,11 +4,18 @@ import { Send, Plus, Minus, School, User as UserIcon, Briefcase, GraduationCap, 
 import { ModulFormData } from '../types';
 import { cn } from '../lib/utils';
 
-// Daftar sekolah yang diperbolehkan sebagai kunci keamanan
+// Daftar sekolah yang diperbolehkan
 const ALLOWED_SCHOOLS = [
   "SD Negeri 1 Merdeka",
   "SD NEGERI 1 MERDEKA",
   "SDN 1 MERDEKA"
+];
+
+// Daftar nama guru yang diperbolehkan
+const ALLOWED_TEACHERS = [
+  "Rista Kasaraeng, S.Pd",
+  "RISTA KASARAENG, S.Pd",
+  "FIDHAL, S.Pd" 
 ];
 
 interface GeneratorFormProps {
@@ -85,13 +92,15 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
     }
   };
   
-  // KUNCI KEAMANAN: Hanya memeriksa apakah Nama Sekolah terdaftar
   const isSchoolAllowed = ALLOWED_SCHOOLS.some(
     school => school.toUpperCase().trim() === formData.schoolName.toUpperCase().trim()
   );
+
+  const isTeacherAllowed = ALLOWED_TEACHERS.some(
+    teacher => teacher.toUpperCase().trim() === formData.teacherName.toUpperCase().trim()
+  );
   
-  // Akses langsung diberikan hanya berdasarkan status sekolah
-  const isAccessAllowed = isSchoolAllowed;
+  const isAccessAllowed = isSchoolAllowed && isTeacherAllowed;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -127,7 +136,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isAccessAllowed) {
-      alert(`Maaf, Satuan Pendidikan belum terdaftar dalam sistem lisensi.`);
+      alert(`Maaf, kombinasi Satuan Pendidikan dan Nama Guru belum terdaftar dalam sistem.`);
       return;
     }
     onSubmit(formData);
@@ -137,8 +146,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
   const labelClass = "text-sm font-bold text-blue-800 flex items-center gap-2";
   const inputClass = "w-full bg-white/50 border border-blue-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all";
 
-  // Warning muncul jika user sudah mengetik nama sekolah tapi belum sesuai dengan daftar list
-  const showWarning = formData.schoolName && !isAccessAllowed;
+  const showWarning = (formData.schoolName || formData.teacherName) && !isAccessAllowed;
 
   return (
     <form onSubmit={handleSubmit} className="max-w-4xl mx-auto space-y-8 pb-20">

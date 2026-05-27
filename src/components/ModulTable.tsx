@@ -134,7 +134,6 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
         </div>
       </div>
 
-      {/* Pembungkus Tambahan di bawah ini berfungsi mencegah halaman meluber ke kanan di layar kecil */}
       <div className="w-full overflow-x-auto no-print-scrollbar">
         <div ref={containerRef} className="bg-white p-6 md:p-12 shadow-sm border border-slate-200 text-slate-900 relative box-border">
           <div className="print-watermark">
@@ -215,10 +214,6 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
                     <td className="text-justify leading-relaxed">{data.desain.tp}</td>
                   </tr>
                   <tr>
-                    <td className="font-semibold">Topik Pembelajaran</td>
-                    <td className="text-justify leading-relaxed">{data.desain.topic}</td>
-                  </tr>
-                  <tr>
                     <td className="font-semibold">Praktik Pedagogis</td>
                     <td className="text-justify leading-relaxed">{data.desain.pedagogy}</td>
                   </tr>
@@ -233,10 +228,6 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
                   <tr>
                     <td className="font-semibold">Pemanfaatan Digital</td>
                     <td className="text-justify leading-relaxed">{data.desain.digitalUtilization}</td>
-                  </tr>
-                  <tr>
-                    <td className="font-semibold">Adaptasi Lokal (Kontekstual)</td>
-                    <td className="text-justify leading-relaxed">{data.desain.adaptasiLokal}</td>
                   </tr>
                 </tbody>
               </table>

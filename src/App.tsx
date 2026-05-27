@@ -45,7 +45,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Rail / Header - Menggunakan gradasi Royal Biru ke Hijau Toska agar terlihat premium */}
+      {/* Navigation Rail / Header */}
       <nav className="no-print bg-gradient-to-r from-blue-900 to-teal-800 sticky top-0 z-50 px-6 py-4 mb-8 flex items-center justify-between shadow-md">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl flex items-center justify-center">
@@ -57,14 +57,12 @@ export default function App() {
           </div>
           <div>
             <h1 className="text-lg font-bold text-white leading-tight">SD NEGERI 11 RATOLINDO</h1>
-            {/* Teks Edisi menggunakan warna Kuning Emas / Amber */}
             <p className="text-[10px] text-amber-400 uppercase tracking-widest font-bold">TM Generator PRO Edition</p>
           </div>
         </div>
 
         <button
           onClick={handleLogout}
-          {/* Warna tombol logout diselaraskan dengan aksen putih/biru transparan */}
           className="flex items-center gap-2 text-blue-100 hover:text-white transition-colors text-sm font-bold bg-white/10 px-4 py-2 rounded-lg"
         >
           <LogOut className="w-4 h-4" />
@@ -83,9 +81,7 @@ export default function App() {
               className="space-y-8"
             >
               <div className="text-center space-y-2 mb-12">
-                {/* Judul Utama menggunakan Royal Biru */}
                 <h2 className="text-4xl font-extrabold text-blue-900 tracking-tight">Buat Modul Ajar Baru</h2>
-                {/* Deskripsi menggunakan Hijau Toska gelap agar kontras di atas warna putih */}
                 <p className="text-teal-800 max-w-xl mx-auto font-medium">
                   Lengkapi data di bawah ini untuk menghasilkan perencanaan pembelajaran mendalam yang terstruktur dan kreatif.
                 </p>
@@ -109,7 +105,6 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* Footer - Garis pembatas (border) menggunakan warna biru muda dan teks menggunakan Hijau Toska/Kuning Emas */}
       <footer className="no-print mt-20 border-t border-blue-100 py-10 text-center">
         <p className="text-sm font-bold text-teal-800 uppercase tracking-widest">
           TM GENERATOR © {new Date().getFullYear()} • <span className="text-amber-600">Fidhal Touna AI</span>

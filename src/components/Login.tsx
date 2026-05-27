@@ -20,7 +20,7 @@ export default function Login({ onLogin }: LoginProps) {
 
     // Standard username: Admin, Password: admin123
     setTimeout(() => {
-      if (username === 'Admin' && password === 'Sawalia1*') {
+      if (username === 'Admin' && password === 'Rahasia1*') {
         onLogin();
       } else {
         setError('Username atau password salah.');
@@ -53,7 +53,7 @@ export default function Login({ onLogin }: LoginProps) {
               />
             </div>
             <h1 className="text-3xl font-bold text-blue-900">TM GENERATOR</h1>
-            <p className="text-teal-700 font-medium">AI Modul Ajar Generator</p>
+            <p className="text-teal-700 font-medium">Teaching Modul Generator</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">

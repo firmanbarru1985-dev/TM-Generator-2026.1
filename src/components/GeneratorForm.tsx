@@ -22,7 +22,6 @@ interface GeneratorFormProps {
   onSubmit: (data: ModulFormData) => void;
   isLoading: boolean;
   savedData?: ModulFormData | null; 
-  // TAMBAHAN: Opsional jika parent punya fungsi khusus untuk beralih layar langsung
   onViewPrevious?: () => void; 
 }
 
@@ -59,7 +58,6 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
       subject: savedData?.subject || '',
       cp: savedData?.cp || '',
       tp: savedData?.tp || '',
-      material: savedData?.material || '',
       meetings: savedData?.meetings || 1,
       duration: savedData?.duration || '',
       pedagogy: savedData?.pedagogy || [],
@@ -77,24 +75,18 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
       setFormData({
         schoolName: '', teacherName: '', teacherNip: '', position: 'Guru Kelas',
         principalName: '', principalNip: '', level: 'SD', grade: '',
-        semester: 'I / Ganjil', subject: '', cp: '', tp: '', material: '',
+        semester: 'I / Ganjil', subject: '', cp: '', tp: '',
         meetings: 1, duration: '', pedagogy: [], dimensi: []
       });
     }
   };
 
-  // PERBAIKAN: Mengembalikan isian formulir ke state dokumen sebelumnya secara instan di layar
   const handleLoadPreviousDocument = () => {
     if (savedData) {
-      // 1. Masukkan data dokumen lama kembali ke dalam form secara instan
       setFormData(savedData);
-      
-      // 2. Jika parent component menyediakan fungsi navigasi langsung, panggil fungsinya
       if (onViewPrevious) {
         onViewPrevious();
       } else {
-        // Jika tidak ada fungsi dari parent, cara tercepat menampilkannya tanpa generate ulang 
-        // adalah memicu submit dengan data lama, tetapi pastikan parent mengenali data ini agar tidak hit API kembali.
         onSubmit(savedData);
       }
     }
@@ -261,11 +253,6 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
         <div className="space-y-2">
           <label className={labelClass}>Tujuan Pembelajaran (TP)</label>
           <textarea name="tp" value={formData.tp} onChange={handleChange} className={cn(inputClass, "h-24 resize-none")} required />
-        </div>
-
-        <div className="space-y-2">
-          <label className={labelClass}>Materi Pelajaran</label>
-          <input name="material" value={formData.material} onChange={handleChange} className={inputClass} required />
         </div>
       </div>
 

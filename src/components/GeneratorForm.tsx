@@ -11,40 +11,31 @@ const ALLOWED_SCHOOLS = [
   "SDN 1 MERDEKA"
 ];
 
-// Daftar nama guru yang diperbolehkan (Gunakan huruf kapital/uppercase untuk konsistensi)
+// Daftar nama guru yang diperbolehkan
 const ALLOWED_TEACHERS = [
   "Rista Kasaraeng, S.Pd",
   "RISTA KASARAENG, S.Pd",
-  "FIDHAL, S.Pd" // Tambahkan nama guru lainnya di sini
+  "FIDHAL, S.Pd" 
 ];
 
 interface GeneratorFormProps {
   onSubmit: (data: ModulFormData) => void;
   isLoading: boolean;
   savedData?: ModulFormData | null; 
+  // TAMBAHAN: Opsional jika parent punya fungsi khusus untuk beralih layar langsung
+  onViewPrevious?: () => void; 
 }
 
 const DIMENSI_LULUSAN = [
-  'Keimanan & Ketakwaan',
-  'Kewargaan',
-  'Penalaran Kritis',
-  'Kreativitas',
-  'Kolaborasi',
-  'Kemandirian',
-  'Kesehatan',
-  'Komunikasi'
+  'Keimanan & Ketakwaan', 'Kewargaan', 'Penalaran Kritis', 'Kreativitas', 
+  'Kolaborasi', 'Kemandirian', 'Kesehatan', 'Komunikasi'
 ];
 
 const PEDAGOGY_OPTIONS = [
-  'Inkuiri-Discovery',
-  'PjBL',
-  'Problem Solving',
-  'Game Based Learning',
-  'Station Learning'
+  'Inkuiri-Discovery', 'PjBL', 'Problem Solving', 'Game Based Learning', 'Station Learning'
 ];
 
-export default function GeneratorForm({ onSubmit, isLoading, savedData }: GeneratorFormProps) {
-  // 1. Inisialisasi awal: Cek localStorage terlebih dahulu sebelum beralih ke savedData atau string kosong
+export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPrevious }: GeneratorFormProps) {
   const [formData, setFormData] = useState<ModulFormData>(() => {
     try {
       const localData = localStorage.getItem('tm_generator_form_data');
@@ -76,45 +67,39 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
     };
   });
 
-  // 2. Efek untuk otomatis menyimpan perubahan state formulir ke localStorage browser
   useEffect(() => {
     localStorage.setItem('tm_generator_form_data', JSON.stringify(formData));
   }, [formData]);
 
-  // 3. Fungsi opsional untuk menghapus draf isian agar guru bisa membuat modul baru dari nol
   const handleClearForm = () => {
     if (confirm("Apakah Anda yakin ingin membersihkan semua draf data yang telah diisi?")) {
       localStorage.removeItem('tm_generator_form_data');
       setFormData({
-        schoolName: '',
-        teacherName: '',
-        teacherNip: '',
-        position: 'Guru Kelas',
-        principalName: '',
-        principalNip: '',
-        level: 'SD',
-        grade: '',
-        semester: 'I / Ganjil',
-        subject: '',
-        cp: '',
-        tp: '',
-        material: '',
-        meetings: 1,
-        duration: '',
-        pedagogy: [],
-        dimensi: []
+        schoolName: '', teacherName: '', teacherNip: '', position: 'Guru Kelas',
+        principalName: '', principalNip: '', level: 'SD', grade: '',
+        semester: 'I / Ganjil', subject: '', cp: '', tp: '', material: '',
+        meetings: 1, duration: '', pedagogy: [], dimensi: []
       });
     }
   };
 
-  // Fungsi untuk langsung memuat ulang hasil dokumen yang digenerate sebelumnya
+  // PERBAIKAN: Mengembalikan isian formulir ke state dokumen sebelumnya secara instan di layar
   const handleLoadPreviousDocument = () => {
     if (savedData) {
-      onSubmit(savedData);
+      // 1. Masukkan data dokumen lama kembali ke dalam form secara instan
+      setFormData(savedData);
+      
+      // 2. Jika parent component menyediakan fungsi navigasi langsung, panggil fungsinya
+      if (onViewPrevious) {
+        onViewPrevious();
+      } else {
+        // Jika tidak ada fungsi dari parent, cara tercepat menampilkannya tanpa generate ulang 
+        // adalah memicu submit dengan data lama, tetapi pastikan parent mengenali data ini agar tidak hit API kembali.
+        onSubmit(savedData);
+      }
     }
   };
   
-  // Fungsi pengecekan keamanan ganda (Sekolah DAN Guru harus valid)
   const isSchoolAllowed = ALLOWED_SCHOOLS.some(
     school => school.toUpperCase().trim() === formData.schoolName.toUpperCase().trim()
   );
@@ -123,7 +108,6 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
     teacher => teacher.toUpperCase().trim() === formData.teacherName.toUpperCase().trim()
   );
   
-  // Akses hanya diberikan jika nama sekolah dan nama guru terdaftar
   const isAccessAllowed = isSchoolAllowed && isTeacherAllowed;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -194,7 +178,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         </button>
       </div>
 
-      {/* Header Info */}
+      {/* Identitas Satuan Pendidikan */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
@@ -234,7 +218,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         </div>
       </div>
 
-      {/* Curriculum Details */}
+      {/* Informasi Pembelajaran */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
@@ -285,7 +269,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         </div>
       </div>
 
-      {/* Logistics & Pedagogy */}
+      {/* Metode & Durasi */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 rounded-lg bg-blue-100 text-blue-600">

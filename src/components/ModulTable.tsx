@@ -29,7 +29,7 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
         .text-center { text-align: center; }
         .font-bold { font-weight: bold; }
         .uppercase { text-transform: uppercase; }
-        .bg-mint-50 { background-color: #f0fdf9 !important; }
+        .bg-blue-50 { background-color: #eff6ff !important; }
         .bg-slate-100 { background-color: #f1f5f9 !important; }
         div.Section1 { page: Section1; }
         p.MsoFooter { margin: 0in; font-size: 9pt; }
@@ -47,7 +47,8 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
         </div>
       </body></html>`;
 
-    const cleanedSource = header.replace(/className=/g, 'class=');
+    // Mengganti kelas agar background header tabel sesuai di berkas unduhan .doc
+    const cleanedSource = header.replace(/className=/g, 'class=').replace(/bg-blue-50/g, 'bg-blue-50');
     const blob = new Blob(['\ufeff', cleanedSource], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -102,12 +103,14 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
       ` }}></style>
       
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 no-print">
-        <button onClick={onBack} className="flex items-center gap-2 text-mint-700 font-bold hover:text-mint-900 transition-colors">
+        {/* Tombol kembali diselaraskan menggunakan warna Royal Biru */}
+        <button onClick={onBack} className="flex items-center gap-2 text-blue-700 font-bold hover:text-blue-900 transition-colors">
           <ChevronLeft className="w-5 h-5" /> Edit Data
         </button>
 
         <div className="relative">
-          <button onClick={() => setShowExportOptions(!showExportOptions)} className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 transition-all">
+          {/* Tombol Cetak disesuaikan dengan skema gradasi Royal Biru ke Hijau Toska */}
+          <button onClick={() => setShowExportOptions(!showExportOptions)} className="bg-gradient-to-r from-blue-700 to-teal-600 hover:opacity-90 text-white px-6 py-3 rounded-xl font-bold shadow-lg flex items-center gap-2 transition-all">
             <Download className="w-5 h-5" /> Unduh / Cetak
           </button>
           
@@ -118,7 +121,7 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
                   <FileText className="w-5 h-5 text-blue-500" /> Format Word (.doc)
                 </button>
                 <button onClick={handlePrint} className="w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-50 text-slate-700 transition-colors">
-                  <Printer className="w-5 h-5 text-orange-500" /> Cetak / Print Browser
+                  <Printer className="w-5 h-5 text-teal-500" /> Cetak / Print Browser
                 </button>
               </motion.div>
             )}
@@ -137,9 +140,9 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
         </div>
 
         <div className="space-y-6">
-          {/* Section 1: Identitas */}
+          {/* Section 1: Identitas - Menggunakan bg-blue-50 */}
           <section>
-            <h2 className="text-sm font-bold bg-mint-50 p-2 border border-slate-300">1. IDENTITAS</h2>
+            <h2 className="text-sm font-bold bg-blue-50 p-2 border border-slate-300 text-blue-900">1. IDENTITAS</h2>
             <table className="spreadsheet-table">
               <tbody>
                 <tr>
@@ -166,9 +169,9 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
             </table>
           </section>
 
-          {/* Section 2: Identifikasi */}
+          {/* Section 2: Identifikasi - Menggunakan bg-blue-50 */}
           <section>
-            <h2 className="text-sm font-bold bg-mint-50 p-2 border border-slate-300">2. IDENTIFIKASI</h2>
+            <h2 className="text-sm font-bold bg-blue-50 p-2 border border-slate-300 text-blue-900">2. IDENTIFIKASI</h2>
             <table className="spreadsheet-table">
               <tbody>
                 <tr>
@@ -187,9 +190,9 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
             </table>
           </section>
 
-          {/* Section 3: Desain Pembelajaran */}
+          {/* Section 3: Desain Pembelajaran - Menggunakan bg-blue-50 */}
           <section>
-            <h2 className="text-sm font-bold bg-mint-50 p-2 border border-slate-300">3. DESAIN PEMBELAJARAN</h2>
+            <h2 className="text-sm font-bold bg-blue-50 p-2 border border-slate-300 text-blue-900">3. DESAIN PEMBELAJARAN</h2>
             <table className="spreadsheet-table">
               <tbody>
                 <tr>
@@ -232,9 +235,9 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
             </table>
           </section>
 
-{/* Section 4: Pengalaman Belajar */}
+          {/* Section 4: Pengalaman Belajar - Menggunakan bg-blue-50 */}
           <section>
-            <h2 className="text-sm font-bold bg-mint-50 p-2 border border-slate-300">4. PENGALAMAN BELAJAR</h2>
+            <h2 className="text-sm font-bold bg-blue-50 p-2 border border-slate-300 text-blue-900">4. PENGALAMAN BELAJAR</h2>
             <table className="spreadsheet-table">
               <tbody>
                 <tr>
@@ -253,9 +256,9 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
             </table>
           </section>
 
-          {/* Section 5: Asesmen */}
+          {/* Section 5: Asesmen - Menggunakan bg-blue-50 */}
           <section>
-            <h2 className="text-sm font-bold bg-mint-50 p-2 border border-slate-300">5. ASESMEN PEMBELAJARAN</h2>
+            <h2 className="text-sm font-bold bg-blue-50 p-2 border border-slate-300 text-blue-900">5. ASESMEN PEMBELAJARAN</h2>
             <table className="spreadsheet-table">
               <tbody>
                 <tr>

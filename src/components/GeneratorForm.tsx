@@ -6,16 +6,16 @@ import { cn } from '../lib/utils';
 
 // Daftar sekolah yang diperbolehkan
 const ALLOWED_SCHOOLS = [
-  "SD Negeri 11 Ratolindo",
-  "SD NEGERI 11 RATOLINDO",
-  "SDN 11 RATOLINDO"
+  "SD Negeri 1 Merdeka",
+  "SD NEGERI 1 MERDEKA",
+  "SDN 1 MERDEKA"
 ];
 
 // Daftar nama guru yang diperbolehkan (Gunakan huruf kapital/uppercase untuk konsistensi)
 const ALLOWED_TEACHERS = [
-  "Sawalia N. Tjanu, S.Pd",
-  "SAWALIA N. TJANU, S.Pd",
-  "Sawalia N. Tjanu,S.Pd" // Tambahkan nama guru lainnya di sini
+  "Rista Kasaraeng, S.Pd",
+  "RISTA KASARAENG, S.Pd",
+  "FIDHAL, S.Pd" // Tambahkan nama guru lainnya di sini
 ];
 
 interface GeneratorFormProps {

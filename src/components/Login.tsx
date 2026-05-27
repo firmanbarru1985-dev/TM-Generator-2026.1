@@ -30,9 +30,9 @@ export default function Login({ onLogin }: LoginProps) {
   };
 
   return (
-    // Mengubah background utama menjadi putih (bg-white)
+    // Menambahkan bg-white untuk mengubah background menjadi warna putih
     <div className="fixed inset-0 flex items-center justify-center p-4 bg-white">
-      {/* Background Decor - Menggunakan Royal Blue & Hijau Toska lembut */}
+      {/* Background Decor - Menggunakan Royal Biru (blue) & Hijau Toska (teal) */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-200/40 blur-[100px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/30 blur-[100px]" />
@@ -53,15 +53,14 @@ export default function Login({ onLogin }: LoginProps) {
                 className="w-full h-full object-contain" 
               />
             </div>
-            {/* Judul: Royal Blue */}
+            {/* Menggunakan Royal Biru */}
             <h1 className="text-3xl font-bold text-blue-900">TM GENERATOR</h1>
-            {/* Subtitle: Hijau Toska */}
+            {/* Menggunakan Hijau Toska */}
             <p className="text-teal-700 font-medium">AI Modul Ajar Generator</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              {/* Label & Icon: Royal Blue & Hijau Toska */}
               <label className="text-sm font-semibold text-blue-800 ml-1">Username</label>
               <div className="relative">
                 <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-500" />
@@ -70,7 +69,6 @@ export default function Login({ onLogin }: LoginProps) {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   placeholder="Masukkan Username"
-                  {/* Border & Focus ring menggunakan warna tema baru */}
                   className="w-full bg-white/50 border border-blue-200 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-blue-300"
                   required
                 />
@@ -78,7 +76,6 @@ export default function Login({ onLogin }: LoginProps) {
             </div>
 
             <div className="space-y-2">
-              {/* Label & Icon: Royal Blue & Hijau Toska */}
               <label className="text-sm font-semibold text-blue-800 ml-1">Password</label>
               <div className="relative">
                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-teal-500" />
@@ -87,7 +84,6 @@ export default function Login({ onLogin }: LoginProps) {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Masukkan Password"
-                  {/* Border & Focus ring menggunakan warna tema baru */}
                   className="w-full bg-white/50 border border-blue-200 rounded-2xl py-3 pl-12 pr-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all placeholder:text-blue-300"
                   required
                 />
@@ -110,7 +106,7 @@ export default function Login({ onLogin }: LoginProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              {/* Tombol: Menggunakan gradasi Royal Blue ke Hijau Toska dengan bayangan warna Blue */}
+              {/* Tombol menggunakan gradasi Royal Biru ke Hijau Toska dengan shadow Royal Biru */}
               className={cn(
                 "w-full bg-gradient-to-r from-blue-700 to-teal-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2",
                 isSubmitting && "opacity-70 cursor-not-allowed"
@@ -127,7 +123,7 @@ export default function Login({ onLogin }: LoginProps) {
             </button>
           </form>
 
-          {/* Edisi Profesional: Kuning Emas (Amber) */}
+          {/* Menggunakan Kuning Emas (amber-600) */}
           <p className="mt-8 text-center text-xs text-amber-600 font-medium tracking-wide uppercase">
             Profesional Edition
           </p>

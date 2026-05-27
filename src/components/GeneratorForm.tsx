@@ -119,8 +119,8 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
   };
 
   const sectionClass = "glass p-6 md:p-8 rounded-[1.5rem] space-y-6";
-  const labelClass = "text-sm font-bold text-mint-800 flex items-center gap-2";
-  const inputClass = "w-full bg-white/50 border border-mint-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-mint-500 focus:border-transparent outline-none transition-all";
+  const labelClass = "text-sm font-bold text-blue-800 flex items-center gap-2";
+  const inputClass = "w-full bg-white/50 border border-blue-200 rounded-xl py-3 px-4 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all";
 
   // Kondisi untuk memunculkan warning visual (jika salah satu atau keduanya salah saat formulir mulai diisi)
   const showWarning = (formData.schoolName || formData.teacherName) && !isAccessAllowed;
@@ -130,10 +130,10 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
       {/* Header Info */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-mint-100 text-mint-600">
+          <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
             <School className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-mint-900">Identitas Satuan Pendidikan</h2>
+          <h2 className="text-xl font-bold text-blue-900">Identitas Satuan Pendidikan</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -170,10 +170,10 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
       {/* Curriculum Details */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-mint-100 text-mint-600">
+          <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
             <GraduationCap className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-mint-900">Informasi Pembelajaran</h2>
+          <h2 className="text-xl font-bold text-blue-900">Informasi Pembelajaran</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="space-y-2">
@@ -221,10 +221,10 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
       {/* Logistics & Pedagogy */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-mint-100 text-mint-600">
+          <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
             <Clock className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-mint-900">Metode & Durasi</h2>
+          <h2 className="text-xl font-bold text-blue-900">Metode & Durasi</h2>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -234,9 +234,9 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
               <button 
                 type="button" 
                 onClick={() => updateMeetings(-1)} 
-                className="w-12 h-12 rounded-xl border-2 border-mint-200 flex items-center justify-center hover:bg-mint-50 transition-colors"
+                className="w-12 h-12 rounded-xl border-2 border-blue-200 flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <Minus className="w-5 h-5 text-mint-600"/>
+                <Minus className="w-5 h-5 text-blue-600"/>
               </button>
 
               <input
@@ -248,16 +248,16 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
                   const diff = val - formData.meetings;
                   updateMeetings(diff);
                 }}
-                className="w-20 h-12 text-center text-xl font-bold bg-white/50 border-2 border-mint-200 rounded-xl focus:ring-2 focus:ring-mint-500 outline-none transition-all"
+                className="w-20 h-12 text-center text-xl font-bold bg-white/50 border-2 border-blue-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 min="1"
               />
 
               <button 
                 type="button" 
                 onClick={() => updateMeetings(1)} 
-                className="w-12 h-12 rounded-xl border-2 border-mint-200 flex items-center justify-center hover:bg-mint-50 transition-colors"
+                className="w-12 h-12 rounded-xl border-2 border-blue-200 flex items-center justify-center hover:bg-blue-50 transition-colors"
               >
-                <Plus className="w-5 h-5 text-mint-600"/>
+                <Plus className="w-5 h-5 text-blue-600"/>
               </button>
             </div>
           </div>
@@ -271,8 +271,8 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
           <label className={labelClass}>Praktik Pedagogis Per Pertemuan</label>
           <div className="grid grid-cols-1 gap-4">
             {Array.from({ length: formData.meetings }).map((_, idx) => (
-              <div key={idx} className="flex flex-col md:flex-row md:items-center gap-4 bg-white/30 p-4 rounded-xl border border-mint-100">
-                <span className="text-sm font-bold text-mint-600 shrink-0">Pertemuan {idx + 1}:</span>
+              <div key={idx} className="flex flex-col md:flex-row md:items-center gap-4 bg-white/30 p-4 rounded-xl border border-blue-100">
+                <span className="text-sm font-bold text-teal-700 shrink-0">Pertemuan {idx + 1}:</span>
                 <div className="flex flex-wrap gap-2">
                   {PEDAGOGY_OPTIONS.map(opt => (
                     <button
@@ -282,8 +282,8 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
                       className={cn(
                         "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all",
                         formData.pedagogy[idx] === opt 
-                          ? "bg-mint-500 border-mint-500 text-white shadow-sm shadow-mint-500/30" 
-                          : "bg-white border-mint-200 text-mint-700 hover:border-mint-400"
+                          ? "bg-teal-600 border-teal-600 text-white shadow-sm shadow-teal-600/30" 
+                          : "bg-white border-blue-200 text-blue-700 hover:border-blue-400"
                       )}
                     >
                       {opt}
@@ -299,10 +299,10 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
       {/* Dimensi Lulusan */}
       <div className={sectionClass}>
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 rounded-lg bg-mint-100 text-mint-600">
+          <div className="p-2 rounded-lg bg-blue-100 text-blue-600">
             <Layers className="w-5 h-5" />
           </div>
-          <h2 className="text-xl font-bold text-mint-900">Dimensi Lulusan</h2>
+          <h2 className="text-xl font-bold text-blue-900">Dimensi Lulusan</h2>
         </div>
         <div className="flex flex-wrap gap-3">
           {DIMENSI_LULUSAN.map(item => (
@@ -313,8 +313,8 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
               className={cn(
                 "px-4 py-2 rounded-xl text-sm font-semibold border transition-all",
                 formData.dimensi.includes(item)
-                  ? "bg-mint-600 border-mint-600 text-white shadow-md shadow-mint-600/20"
-                  : "bg-white border-mint-200 text-mint-700 hover:border-mint-400"
+                  ? "bg-teal-600 border-teal-600 text-white shadow-md shadow-teal-600/20"
+                  : "bg-white border-blue-200 text-blue-700 hover:border-blue-400"
               )}
             >
               {item}
@@ -322,7 +322,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
           ))}
         </div>
         {formData.dimensi.length === 0 && (
-          <p className="text-xs text-mint-500 italic">Pilih minimal satu dimensi lulusan.</p>
+          <p className="text-xs text-amber-600 italic font-medium">Pilih minimal satu dimensi lulusan.</p>
         )}
       </div>
 
@@ -342,10 +342,10 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData }: Genera
         type="submit"
         disabled={isLoading || formData.dimensi.length === 0 || !isAccessAllowed}
         className={cn(
-          "w-full gradient-mint text-white font-bold py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 transition-all",
+          "w-full bg-gradient-to-r from-blue-700 to-teal-600 text-white font-bold py-5 rounded-2xl shadow-xl flex items-center justify-center gap-3 transition-all",
           (isLoading || formData.dimensi.length === 0 || !isAccessAllowed) 
             ? "opacity-40 cursor-not-allowed grayscale" 
-            : "opacity-100 shadow-mint-500/20"
+            : "opacity-100 shadow-blue-500/20"
         )}
       >
         {isLoading ? (

@@ -124,7 +124,7 @@ export default function App() {
           TM GENERATOR © {new Date().getFullYear()} • <span className="text-amber-600">Fidhal Touna AI</span>
         </p>
         <p className="text-xs text-blue-500 mt-1">
-          Designed for Excellence in Education
+          Version : 2026.5.1
         </p>
       </footer>
     </div>

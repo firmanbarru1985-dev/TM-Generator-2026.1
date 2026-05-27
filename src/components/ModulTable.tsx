@@ -183,7 +183,7 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
                   <td className="text-justify leading-relaxed">{data.identifikasi.material}</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">Capaian Dimensi Lulusan</td>
+                  <td className="font-semibold">Dimensi Profil Lulusan</td>
                   <td className="text-justify leading-relaxed">{data.identifikasi.dimensi}</td>
                 </tr>
               </tbody>
@@ -241,15 +241,15 @@ export default function ModulTable({ data, formInput, onBack }: ModulTableProps)
             <table className="spreadsheet-table">
               <tbody>
                 <tr>
-                  <td className="w-1/3 font-semibold">Memahami</td>
+                  <td className="w-1/3 font-semibold">Memahami (Understanding)</td>
                   <td className="text-justify leading-relaxed">{data.pengalaman.memahami}</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">Mengaplikasi</td>
+                  <td className="font-semibold">Mengaplikasi (Applying)</td>
                   <td className="text-justify leading-relaxed">{data.pengalaman.mengaplikasi}</td>
                 </tr>
                 <tr>
-                  <td className="font-semibold">Merefleksi</td>
+                  <td className="font-semibold">Merefleksi (Reflecting)</td>
                   <td className="text-justify leading-relaxed">{data.pengalaman.merefleksi}</td>
                 </tr>
               </tbody>

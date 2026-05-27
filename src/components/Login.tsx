@@ -30,9 +30,8 @@ export default function Login({ onLogin }: LoginProps) {
   };
 
   return (
-    // Menambahkan bg-white untuk mengubah background menjadi warna putih
     <div className="fixed inset-0 flex items-center justify-center p-4 bg-white">
-      {/* Background Decor - Menggunakan Royal Biru (blue) & Hijau Toska (teal) */}
+      {/* Background Decor */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-blue-200/40 blur-[100px]" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-teal-400/30 blur-[100px]" />
@@ -53,9 +52,7 @@ export default function Login({ onLogin }: LoginProps) {
                 className="w-full h-full object-contain" 
               />
             </div>
-            {/* Menggunakan Royal Biru */}
             <h1 className="text-3xl font-bold text-blue-900">TM GENERATOR</h1>
-            {/* Menggunakan Hijau Toska */}
             <p className="text-teal-700 font-medium">AI Modul Ajar Generator</p>
           </div>
 
@@ -106,7 +103,6 @@ export default function Login({ onLogin }: LoginProps) {
             <button
               type="submit"
               disabled={isSubmitting}
-              {/* Tombol menggunakan gradasi Royal Biru ke Hijau Toska dengan shadow Royal Biru */}
               className={cn(
                 "w-full bg-gradient-to-r from-blue-700 to-teal-600 text-white font-bold py-4 rounded-2xl shadow-lg shadow-blue-500/30 hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2",
                 isSubmitting && "opacity-70 cursor-not-allowed"
@@ -123,7 +119,6 @@ export default function Login({ onLogin }: LoginProps) {
             </button>
           </form>
 
-          {/* Menggunakan Kuning Emas (amber-600) */}
           <p className="mt-8 text-center text-xs text-amber-600 font-medium tracking-wide uppercase">
             Profesional Edition
           </p>

@@ -35,10 +35,15 @@ export async function generateModulAjar(data: ModulFormData): Promise<GeneratedM
     Seluruh output wajib menggunakan istilah "murid" dan tidak boleh menggunakan kata "siswa" atau "peserta didik".
     Format output: JSON objek sesuai skema GeneratedModul.
   `;
+  
+  // Jalankan fungsi dengan maksimum 3 kali percobaan jika gagal karena server penuh
+  let attempts = 0;
+  const maxAttempts = 3;
 
+  while (attempts < maxAttempts) {
   try {
     const response = await ai.models.generateContent({
-      model: "gemini-3-flash-preview",
+      model: "gemini-2.5-flash", 
       contents: prompt,
       config: {
         responseMimeType: "application/json",
@@ -102,12 +107,23 @@ export async function generateModulAjar(data: ModulFormData): Promise<GeneratedM
     });
 
     if (!response.text) {
-      throw new Error("Gagal mendapatkan respon dari AI.");
-    }
+        throw new Error("Gagal mendapatkan respon dari AI.");
+      }
 
-    return JSON.parse(response.text);
-  } catch (error) {
-    console.error("AI Generation Error:", error);
-    throw error;
+      return JSON.parse(response.text);
+
+    } catch (error: any) {
+      attempts++;
+      console.warn(`Percobaan ke-${attempts} gagal. Error:`, error.message);
+      
+      // Jika sudah mencapai batas percobaan, lempar error ke UI
+      if (attempts >= maxAttempts) {
+        console.error("AI Generation Error setelah beberapa kali mencoba:", error);
+        throw error;
+      }
+      
+      // Tunggu 2 detik sebelum mencoba kembali (Exponential Backoff sederhana)
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
   }
-}
+  throw new Error("Gagal memproses Modul Ajar.");

@@ -35,95 +35,93 @@ export async function generateModulAjar(data: ModulFormData): Promise<GeneratedM
     Seluruh output wajib menggunakan istilah "murid" dan tidak boleh menggunakan kata "siswa" atau "peserta didik".
     Format output: JSON objek sesuai skema GeneratedModul.
   `;
-  
-  // Jalankan fungsi dengan maksimum 3 kali percobaan jika gagal karena server penuh
+
   let attempts = 0;
   const maxAttempts = 3;
 
   while (attempts < maxAttempts) {
-  try {
-    const response = await ai.models.generateContent({
-      model: "gemini-2.5-flash", 
-      contents: prompt,
-      config: {
-        responseMimeType: "application/json",
-        responseSchema: {
-          type: Type.OBJECT,
-          required: ["identitas", "identifikasi", "desain", "pengalaman", "asesmen"],
-          properties: {
-            identitas: {
-              type: Type.OBJECT,
-              required: ["schoolName", "subject", "classSemester", "duration"],
-              properties: {
-                schoolName: { type: Type.STRING },
-                subject: { type: Type.STRING },
-                classSemester: { type: Type.STRING },
-                duration: { type: Type.STRING }
-              }
-            },
-            identifikasi: {
-              type: Type.OBJECT,
-              required: ["students", "material", "dimensi"],
-              properties: {
-                students: { type: Type.STRING },
-                material: { type: Type.STRING },
-                dimensi: { type: Type.STRING }
-              }
-            },
-            desain: {
-              type: Type.OBJECT,
-              required: ["cp", "crossDisciplinary", "tp", "pedagogy", "partnership", "environment", "digitalUtilization"],
-              properties: {
-                cp: { type: Type.STRING },
-                crossDisciplinary: { type: Type.STRING },
-                tp: { type: Type.STRING },
-                pedagogy: { type: Type.STRING },
-                partnership: { type: Type.STRING },
-                environment: { type: Type.STRING },
-                digitalUtilization: { type: Type.STRING }
-              }
-            },
-            pengalaman: {
-              type: Type.OBJECT,
-              required: ["memahami", "mengaplikasi", "merefleksi"],
-              properties: {
-                memahami: { type: Type.STRING },
-                mengaplikasi: { type: Type.STRING },
-                merefleksi: { type: Type.STRING }
-              }
-            },
-            asesmen: {
-              type: Type.OBJECT,
-              required: ["awal", "proses", "akhir"],
-              properties: {
-                awal: { type: Type.STRING },
-                proses: { type: Type.STRING },
-                akhir: { type: Type.STRING }
+    try {
+      const response = await ai.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            required: ["identitas", "identifikasi", "desain", "pengalaman", "asesmen"],
+            properties: {
+              identitas: {
+                type: Type.OBJECT,
+                required: ["schoolName", "subject", "classSemester", "duration"],
+                properties: {
+                  schoolName: { type: Type.STRING },
+                  subject: { type: Type.STRING },
+                  classSemester: { type: Type.STRING },
+                  duration: { type: Type.STRING }
+                }
+              },
+              identifikasi: {
+                type: Type.OBJECT,
+                required: ["students", "material", "dimensi"],
+                properties: {
+                  students: { type: Type.STRING },
+                  material: { type: Type.STRING },
+                  dimensi: { type: Type.STRING }
+                }
+              },
+              desain: {
+                type: Type.OBJECT,
+                required: ["cp", "crossDisciplinary", "tp", "pedagogy", "partnership", "environment", "digitalUtilization"],
+                properties: {
+                  cp: { type: Type.STRING },
+                  crossDisciplinary: { type: Type.STRING },
+                  tp: { type: Type.STRING },
+                  pedagogy: { type: Type.STRING },
+                  partnership: { type: Type.STRING },
+                  environment: { type: Type.STRING },
+                  digitalUtilization: { type: Type.STRING }
+                }
+              },
+              pengalaman: {
+                type: Type.OBJECT,
+                required: ["memahami", "mengaplikasi", "merefleksi"],
+                properties: {
+                  memahami: { type: Type.STRING },
+                  mengaplikasi: { type: Type.STRING },
+                  merefleksi: { type: Type.STRING }
+                }
+              },
+              asesmen: {
+                type: Type.OBJECT,
+                required: ["awal", "proses", "akhir"],
+                properties: {
+                  awal: { type: Type.STRING },
+                  proses: { type: Type.STRING },
+                  akhir: { type: Type.STRING }
+                }
               }
             }
           }
         }
-      }
-    });
+      });
 
-    if (!response.text) {
+      if (!response.text) {
         throw new Error("Gagal mendapatkan respon dari AI.");
       }
 
       return JSON.parse(response.text);
-
     } catch (error: any) {
       attempts++;
       console.warn(`Percobaan ke-${attempts} gagal. Error:`, error.message);
-      
-      // Jika sudah mencapai batas percobaan, lempar error ke UI
+
       if (attempts >= maxAttempts) {
         console.error("AI Generation Error setelah beberapa kali mencoba:", error);
         throw error;
       }
-      
-      // Tunggu 2 detik sebelum mencoba kembali (Exponential Backoff sederhana)
+
       await new Promise((resolve) => setTimeout(resolve, 2000));
     }
   }
+
   throw new Error("Gagal memproses Modul Ajar.");
+} // <--- Kurung penutup fungsi utama ini yang sebelumnya hilang!

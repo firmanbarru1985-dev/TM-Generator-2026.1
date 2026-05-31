@@ -34,6 +34,73 @@ const PEDAGOGY_OPTIONS = [
   'Inkuiri-Discovery', 'PjBL', 'Problem Solving', 'Game Based Learning', 'Station Learning'
 ];
 
+// =====================================================================
+// DATA MASTER & FUNGSI UNTUK CAPAIAN PEMBELAJARAN (CP) OTOMATIS
+// =====================================================================
+
+// Fungsi untuk menentukan Fase berdasarkan Jenjang dan Kelas
+const getFase = (level: string, grade: string): string => {
+  const gradeNum = parseInt(grade.replace(/\D/g, ''));
+  if (!gradeNum) return '';
+
+  if (level === 'SD') {
+    if (gradeNum === 1 || gradeNum === 2) return 'A';
+    if (gradeNum === 3 || gradeNum === 4) return 'B';
+    if (gradeNum === 5 || gradeNum === 6) return 'C';
+  } else if (level === 'SMP') {
+    if (gradeNum >= 7 && gradeNum <= 9) return 'D';
+  } else if (level === 'SMA' || level === 'SMK') {
+    if (gradeNum === 10) return 'E';
+    if (gradeNum === 11 || gradeNum === 12) return 'F';
+  }
+  return '';
+};
+
+// Data CP diekstrak dari file BSKAP No. 046 Tahun 2025
+const MASTER_CP_DATA = [
+  // --- JENJANG SD ---
+  { level: 'SD', fase: 'A', subject: 'Pendidikan Pancasila', elemen: 'Pancasila', text: 'Murid mampu mengenal dan menceritakan simbol dan sila-sila Pancasila dalam lambang negara Garuda Pancasila; menerapkan nilai-nilai Pancasila di lingkungan keluarga dan sekolah.' },
+  { level: 'SD', fase: 'A', subject: 'Pendidikan Pancasila', elemen: 'Undang-Undang Dasar Negara Republik Indonesia Tahun 1945', text: 'Murid mampu mengenal aturan di lingkungan keluarga dan sekolah; menceritakan contoh sikap mematuhi dan tidak mematuhi aturan di keluarga dan sekolah; menyampaikan pendapat di kelas.' },
+  { level: 'SD', fase: 'A', subject: 'Bahasa Indonesia', elemen: 'Menyimak', text: 'Murid mampu bersikap menjadi penyimak yang baik; memahami pesan lisan dan informasi dari media audio, teks aural (teks yang dibacakan dan/atau didengar), dan instruksi lisan.' },
+  { level: 'SD', fase: 'A', subject: 'Bahasa Indonesia', elemen: 'Membaca dan Memirsa', text: 'Murid mampu memahami informasi dari bacaan dan tayangan yang dipirsa tentang diri dan lingkungan, narasi pendek, serta puisi anak.' },
+  { level: 'SD', fase: 'A', subject: 'Matematika', elemen: 'Bilangan', text: 'Murid menunjukkan pemahaman dan memiliki intuisi bilangan (number sense) pada bilangan cacah sampai 100, membaca, menulis, menentukan nilai tempat, membandingkan, mengurutkan, serta melakukan operasi penjumlahan dan pengurangan.' },
+  { level: 'SD', fase: 'B', subject: 'Pendidikan Pancasila', elemen: 'Bhinneka Tunggal Ika', text: 'Murid mampu mengenal identitas diri, teman, dan warga sekolah sesuai budaya, minat, dan perilakunya; mengenali karakteristik fisik dan non-fisik orang dan benda di lingkungan sekitar.' },
+  { level: 'SD', fase: 'B', subject: 'Bahasa Indonesia', elemen: 'Berbicara dan Presentasi', text: 'Murid mampu berbicara dengan pilihan kata dan sikap tubuh/gestur yang santun, menggunakan volume dan intonasi yang tepat sesuai konteks.' },
+  { level: 'SD', fase: 'B', subject: 'Matematika', elemen: 'Geometri', text: 'Murid dapat mendeskripsikan ciri berbagai bentuk bangun datar dan bangun ruang; menyusun (komposisi) dan mengurai (dekomposisi) berbagai bangun datar.' },
+  { level: 'SD', fase: 'B', subject: 'Ilmu Pengetahuan Alam dan Sosial (IPAS)', elemen: 'Pemahaman IPAS (Sains & Sosial)', text: 'Murid menganalisis hubungan antara bentuk serta fungsi bagian tubuh pada manusia/hewan; siklus hidup makhluk hidup dan pelestariannya; masalah pelestarian lingkungan sekitar.' },
+  { level: 'SD', fase: 'C', subject: 'Pendidikan Pancasila', elemen: 'Negara Kesatuan Republik Indonesia', text: 'Murid mampu menjelaskan wilayah NKRI sebagai satu kesatuan utuh; berpartisipasi menjaga keutuhan wilayah NKRI; meneladani perjuangan para pahlawan.' },
+  { level: 'SD', fase: 'C', subject: 'Bahasa Indonesia', elemen: 'Menulis', text: 'Murid mampu menulis teks eksplanasi, laporan, dan eksposisi persuasif dengan penyajian yang runtut dan menggunakan ejaan yang disempurnakan (EYD).' },
+  { level: 'SD', fase: 'C', subject: 'Matematika', elemen: 'Analisis Data dan Peluang', text: 'Murid dapat mengurutkan, membandingkan, menyajikan, dan menganalisis data banyak benda dan data hasil pengukuran dalam bentuk gambar, piktogram, diagram batang, dan tabel frekuensi.' },
+  { level: 'SD', fase: 'C', subject: 'Ilmu Pengetahuan Alam dan Sosial (IPAS)', elemen: 'Pemahaman IPAS', text: 'Murid melakukan simulasi dengan menggunakan gambar/bagan/alat bantu sederhana tentang sistem organ tubuh manusia (pencernaan, pernapasan, dan peredaran darah) serta kaitannya dengan kesehatan.' },
+
+  // --- JENJANG SMP ---
+  { level: 'SMP', fase: 'D', subject: 'Pendidikan Pancasila', elemen: 'Pancasila', text: 'Peserta didik mampu menganalisis kronologi lahirnya Pancasila; mengkaji fungsi dan kedudukan Pancasila sebagai dasar negara dan pandangan hidup bangsa; mengimplementasikan nilai-nilai Pancasila.' },
+  { level: 'SMP', fase: 'D', subject: 'Bahasa Indonesia', elemen: 'Membaca dan Memirsa', text: 'Peserta didik memahami informasi berupa gagasan, pikiran, pandangan, arahan atau pesan dari berbagai jenis teks (deskripsi, narasi, puisi, eksplanasi dan eksposisi) baik visual maupun audiovisual.' },
+  { level: 'SMP', fase: 'D', subject: 'Matematika', elemen: 'Aljabar', text: 'Peserta didik dapat mengenali, memprediksi dan menggeneralisasi pola dalam bentuk susunan benda dan bilangan; menyatakan suatu situasi ke dalam bentuk aljabar; menyelesaikan persamaan dan pertidaksamaan linear satu variabel.' },
+  { level: 'SMP', fase: 'D', subject: 'Ilmu Pengetahuan Alam (IPA)', elemen: 'Pemahaman IPA', text: 'Peserta didik mampu melakukan klasifikasi makhluk hidup dan benda berdasarkan karakteristik yang diamati; mengidentifikasi sifat dan karakteristik zat, membedakan perubahan fisik dan kimia.' },
+  { level: 'SMP', fase: 'D', subject: 'Ilmu Pengetahuan Sosial (IPS)', elemen: 'Pemahaman Konsep', text: 'Peserta didik memahami keberadaan diri dan keluarga di tengah lingkungan sosial; menganalisis hubungan antara keragaman kondisi geografis Indonesia dengan pembentukan identitas masyarakat.' },
+  { level: 'SMP', fase: 'D', subject: 'Bahasa Inggris', elemen: 'Menyimak - Berbicara', text: 'Peserta didik menggunakan bahasa Inggris untuk berinteraksi dan saling bertukar ide, pengalaman, minat, dan pendapat dengan guru, teman sebaya dan orang lain dalam berbagai macam konteks familiar formal dan informal.' },
+  { level: 'SMP', fase: 'D', subject: 'Informatika (Termasuk Koding & AI)', elemen: 'Berpikir Komputasional', text: 'Peserta didik mampu menerapkan berpikir komputasional untuk menghasilkan solusi logis dari persoalan dengan data diskrit bervolume kecil serta struktur data (list, stack, queue). Mampu mengenal dasar-dasar Algoritma dan Pemrograman (Koding).' },
+
+  // --- JENJANG SMA ---
+  { level: 'SMA', fase: 'E', subject: 'Pendidikan Pancasila', elemen: 'Pancasila', text: 'Peserta didik mampu menganalisis cara pandang para pendiri negara tentang rumusan Pancasila sebagai dasar negara; mempraktikkan nilai-nilai Pancasila dalam kehidupan sehari-hari sesuai perkembangan zaman.' },
+  { level: 'SMA', fase: 'E', subject: 'Matematika', elemen: 'Bilangan', text: 'Peserta didik dapat menggeneralisasi sifat-sifat operasi bilangan berpangkat (eksponen) dan logaritma, serta menggunakan barisan dan deret (aritmetika dan geometri).' },
+  { level: 'SMA', fase: 'E', subject: 'Fisika', elemen: 'Pemahaman Sains', text: 'Peserta didik mampu mengamati, menyelidiki, dan menjelaskan fenomena alam yang berkaitan dengan pengukuran fisik, energi alternatif, dan pemanasan global.' },
+  { level: 'SMA', fase: 'E', subject: 'Kimia', elemen: 'Pemahaman Sains', text: 'Peserta didik memahami struktur atom, sifat keperiodikan unsur, ikatan kimia, serta penerapan prinsip kimia hijau dalam kehidupan sehari-hari.' },
+  { level: 'SMA', fase: 'E', subject: 'Biologi', elemen: 'Pemahaman Sains', text: 'Peserta didik memahami keanekaragaman hayati dan peranannya; virus dan peranannya; serta ekosistem dan aliran energi.' },
+  { level: 'SMA', fase: 'E', subject: 'Informatika', elemen: 'Sistem Komputer, Koding & AI', text: 'Peserta didik mampu memahami komponen, fungsi, dan cara kerja komputer; memahami konsep kecerdasan artifisial (AI) tingkat dasar, etika data, dan merancang koding pemrograman struktural.' },
+  { level: 'SMA', fase: 'F', subject: 'Bahasa Indonesia', elemen: 'Membaca dan Memirsa', text: 'Peserta didik mampu mengevaluasi gagasan, pikiran, pandangan, atau pesan dari berbagai jenis teks (monolog/dialog/informasional/fiksi) secara kritis dan reflektif.' },
+  { level: 'SMA', fase: 'F', subject: 'Matematika (Tingkat Lanjut)', elemen: 'Aljabar dan Fungsi', text: 'Peserta didik dapat melakukan operasi aritmetika pada polinomial (suku banyak), menentukan faktor polinomial, matriks, serta fungsi trigonometri beserta grafiknya.' },
+
+  // --- JENJANG SMK ---
+  { level: 'SMK', fase: 'E', subject: 'Matematika (SMK)', elemen: 'Geometri & Trigonometri', text: 'Peserta didik menyelesaikan masalah yang berkaitan dengan perbandingan trigonometri pada segitiga siku-siku serta aplikasinya pada pemecahan masalah konstruksi atau teknik/bisnis.' },
+  { level: 'SMK', fase: 'E', subject: 'Projek IPAS (SMK)', elemen: 'Menjelaskan Fenomena secara Ilmiah', text: 'Peserta didik mampu menjelaskan fenomena alam dan sosial di lingkungan kerjanya secara ilmiah, aspek makhluk hidup, zat dan perubahannya, serta energi dan perubahannya.' },
+  { level: 'SMK', fase: 'E', subject: 'Dasar-Dasar Program Keahlian (Umum)', elemen: 'Proses Bisnis Dunia Kerja', text: 'Peserta didik mampu memahami proses bisnis secara menyeluruh pada industri/bidang keahlian masing-masing, termasuk K3LH (Keselamatan, Kesehatan Kerja, dan Lingkungan Hidup).' },
+  { level: 'SMK', fase: 'F', subject: 'Mata Pelajaran Kejuruan (Spesifik)', elemen: 'Perencanaan & Eksekusi Kerja', text: 'Peserta didik menerapkan kompetensi keahlian spesifik dunia kerja/industri; melaksanakan penjaminan mutu produk/jasa; menggunakan teknologi digital manufaktur atau sistem aplikasi industri terkait.' },
+  { level: 'SMK', fase: 'F', subject: 'Projek Kreatif dan Kewirausahaan', elemen: 'Kegiatan Produksi & Kewirausahaan', text: 'Peserta didik mampu menyusun rencana usaha (business plan), membuat produk (barang/jasa) kreatif bernilai ekonomis, melakukan pemasaran digital, serta mengelola keuangan mikro usaha.' },
+  { level: 'SMK', fase: 'F', subject: 'Praktik Kerja Lapangan (PKL)', elemen: 'Internalisasi Budaya Kerja', text: 'Peserta didik menginternalisasi budaya kerja dunia industri (disiplin, integritas, kerja tim); mengaplikasikan kompetensi teknis di dunia kerja nyata minimal selama 1 semester penuh.' }
+];
+
 export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPrevious }: GeneratorFormProps) {
   const [formData, setFormData] = useState<ModulFormData>(() => {
     try {
@@ -68,6 +135,21 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
   useEffect(() => {
     localStorage.setItem('tm_generator_form_data', JSON.stringify(formData));
   }, [formData]);
+
+  // Kalkulasi Fase secara Reaktif
+  const currentFase = getFase(formData.level, formData.grade);
+
+  // Filter CP berdasarkan Jenjang, Fase, dan kata kunci di Input Mapel
+  const availableCPs = MASTER_CP_DATA.filter(cp => {
+    const matchLevel = cp.level === formData.level;
+    const matchFase = cp.fase === currentFase;
+    // Pengecekan fuzzy untuk input mata pelajaran
+    const matchSubject = formData.subject 
+      ? cp.subject.toLowerCase().includes(formData.subject.toLowerCase()) || formData.subject.toLowerCase().includes(cp.subject.toLowerCase())
+      : true; 
+    
+    return matchLevel && matchFase && matchSubject;
+  });
 
   const handleClearForm = () => {
     if (confirm("Apakah Anda yakin ingin membersihkan semua draf data yang telah diisi?")) {
@@ -104,7 +186,13 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    // Reset CP jika Kelas atau Jenjang atau Mapel berubah
+    if (name === 'grade' || name === 'level' || name === 'subject') {
+      setFormData(prev => ({ ...prev, [name]: value, cp: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDimensiToggle = (item: string) => {
@@ -225,6 +313,7 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
               <option value="SD">SD</option>
               <option value="SMP">SMP</option>
               <option value="SMA">SMA</option>
+              <option value="SMK">SMK</option> {/* Opsi SMK Ditambahkan */}
             </select>
           </div>
           <div className="space-y-2">
@@ -242,12 +331,40 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
         
         <div className="space-y-2">
           <label className={labelClass}><BookOpen className="w-4 h-4"/> Mata Pelajaran (Mapel)</label>
-          <input name="subject" value={formData.subject} onChange={handleChange} className={inputClass} required />
+          <input name="subject" value={formData.subject} onChange={handleChange} className={inputClass} placeholder="Contoh: Pendidikan Pancasila" required />
         </div>
 
+        {/* INPUT CP YANG SUDAH MENJADI DROPDOWN */}
         <div className="space-y-2">
-          <label className={labelClass}><Layers className="w-4 h-4"/> Capaian Pembelajaran (CP)</label>
-          <textarea name="cp" value={formData.cp} onChange={handleChange} className={cn(inputClass, "h-24 resize-none")} required />
+          <div className="flex justify-between items-center">
+            <label className={labelClass}><Layers className="w-4 h-4"/> Capaian Pembelajaran (CP)</label>
+            {currentFase && (
+              <span className="text-xs font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-md">
+                Fase {currentFase}
+              </span>
+            )}
+          </div>
+          <select 
+            name="cp" 
+            value={formData.cp} 
+            onChange={handleChange} 
+            className={inputClass} 
+            required
+            disabled={!formData.grade || availableCPs.length === 0}
+          >
+            <option value="" disabled>
+              {!formData.grade 
+                ? "-- Isi Kelas terlebih dahulu --" 
+                : availableCPs.length === 0 
+                  ? "-- CP belum tersedia untuk Mapel ini --" 
+                  : "-- Pilih Capaian Pembelajaran --"}
+            </option>
+            {availableCPs.map((cp, idx) => (
+              <option key={idx} value={`[Elemen: ${cp.elemen}] ${cp.text}`}>
+                [{cp.elemen}] {cp.text.length > 80 ? `${cp.text.substring(0, 80)}...` : cp.text}
+              </option>
+            ))}
+          </select>
         </div>
 
         <div className="space-y-2">

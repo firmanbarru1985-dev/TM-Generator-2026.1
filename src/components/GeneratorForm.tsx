@@ -33,7 +33,18 @@ const DIMENSI_LULUSAN = [
 const PEDAGOGY_OPTIONS = [
   'Inkuiri-Discovery', 'PjBL', 'Problem Solving', 'Game Based Learning', 'Station Learning'
 ];
-
+const SUBJECT_OPTIONS: Record<string, string[]> = {
+  'SD': ['Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Ilmu Pengetahuan Alam dan Sosial (IPAS)', 'Seni', 'PJOK'],
+  'SMP': ['Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Ilmu Pengetahuan Alam (IPA)', 'Ilmu Pengetahuan Sosial (IPS)', 'Bahasa Inggris', 'Informatika'],
+  'SMA': ['Pendidikan Pancasila', 'Bahasa Indonesia', 'Matematika', 'Fisika', 'Kimia', 'Biologi', 'Informatika', 'Sejarah'],
+  'SMK': ['Matematika (SMK)', 'Projek IPAS (SMK)', 'Dasar-Dasar Program Keahlian (Umum)', 'Mata Pelajaran Kejuruan (Spesifik)', 'Projek Kreatif dan Kewirausahaan']
+};
+const getGradeOptions = (level: string) => {
+  if (level === 'SD') return ['1', '2', '3', '4', '5', '6'];
+  if (level === 'SMP') return ['7', '8', '9'];
+  if (level === 'SMA' || level === 'SMK') return ['10', '11', '12'];
+  return [];
+};
 // =====================================================================
 // DATA MASTER & FUNGSI UNTUK CAPAIAN PEMBELAJARAN (CP) OTOMATIS
 // =====================================================================
@@ -187,8 +198,11 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     
-    // Reset CP jika Kelas atau Jenjang atau Mapel berubah
-    if (name === 'grade' || name === 'level' || name === 'subject') {
+    if (name === 'level') {
+      // Jika jenjang diganti, reset kelas, mapel, dan CP
+      setFormData(prev => ({ ...prev, level: value, grade: '', subject: '', cp: '' }));
+    } else if (name === 'grade' || name === 'subject') {
+      // Jika kelas/mapel diganti, reset CP
       setFormData(prev => ({ ...prev, [name]: value, cp: '' }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -318,7 +332,12 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
           </div>
           <div className="space-y-2">
             <label className={labelClass}>Kelas</label>
-            <input name="grade" value={formData.grade} onChange={handleChange} className={inputClass} placeholder="Contoh: 1, 7, 10" required />
+            <select name="grade" value={formData.grade} onChange={handleChange} className={inputClass} required>
+              <option value="" disabled>-- Pilih Kelas --</option>
+              {getGradeOptions(formData.level).map((g) => (
+                <option key={g} value={g}>Kelas {g}</option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2">
             <label className={labelClass}><Calendar className="w-4 h-4"/> Semester</label>
@@ -331,7 +350,18 @@ export default function GeneratorForm({ onSubmit, isLoading, savedData, onViewPr
         
         <div className="space-y-2">
           <label className={labelClass}><BookOpen className="w-4 h-4"/> Mata Pelajaran (Mapel)</label>
-          <input name="subject" value={formData.subject} onChange={handleChange} className={inputClass} placeholder="Contoh: Pendidikan Pancasila" required />
+          <select 
+            name="subject" 
+            value={formData.subject} 
+            onChange={handleChange} 
+            className={inputClass} 
+            required
+          >
+            <option value="" disabled>-- Pilih Mata Pelajaran --</option>
+            {SUBJECT_OPTIONS[formData.level]?.map((sub) => (
+              <option key={sub} value={sub}>{sub}</option>
+            ))}
+          </select>
         </div>
 
         {/* INPUT CP YANG SUDAH MENJADI DROPDOWN */}
